@@ -1,6 +1,6 @@
 # LinkedIn Job Auto-Filter Extension
 
-An automated Chrome extension that helps you filter through LinkedIn job listings using LLMs (Gemini or Anthropic Claude). It evaluates job descriptions against your personal profile, skills, and experience, scores them, and logs the results to a Google Sheet.
+An automated Chrome extension that helps you filter through LinkedIn job listings using LLMs (Gemini or Anthropic Claude). It evaluates job descriptions against your personal profile, skills, and experience, scores them, and logs the results to a Google Sheet. Fully coded with Gemini 3.1 Pro (High). 
 
 ## Features
 
