@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Job Auto-Filter</h2>
+
+        <div class="form-group">
+            <label for="apiProvider">AI Provider:</label>
+            <select id="apiProvider"
+                style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; background: #fff;">
+                <option value="gemini">Google Gemini (Free Tier Limit 15 RPM)</option>
+                <option value="anthropic">Anthropic Claude (High Limits, Requires Paid Credits)</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="geminiKeyGroup">
+            <label for="apiKey">Gemini API Key:</label>
+            <input type="password" id="apiKey" placeholder="AIzaSy...">
+        </div>
+
+        <div class="form-group" id="anthropicKeyGroup" style="display:none;">
+            <label for="anthropicApiKey">Anthropic API Key:</label>
+            <input type="password" id="anthropicApiKey" placeholder="sk-ant-...">
+        </div>
+
+        <div class="form-group">
+            <label for="webhookUrl">Google Apps Script Webhook URL:</label>
+            <input type="text" id="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec">
+        </div>
+
+        <div class="form-group">
+            <label for="profile">Profile/Demographics (Eligibility):</label>
+            <textarea id="profile" rows="3" placeholder="Load profile.md"></textarea>
+            <button id="loadProfileBtn" class="secondary-btn">Load profile.md</button>
+        </div>
+
+        <div class="form-group">
+            <label for="resume">Target Skills (Fit):</label>
+            <textarea id="resume" rows="3" placeholder="Load skills.md"></textarea>
+            <button id="loadSkillsBtn" class="secondary-btn">Load skills.md</button>
+        </div>
+
+        <div class="form-group">
+            <label for="experience">Past Experience / Resume (Readiness):</label>
+            <textarea id="experience" rows="3" placeholder="Load resume.md"></textarea>
+            <button id="loadExperienceBtn" class="secondary-btn">Load resume.md</button>
+        </div>
+
+        <div class="form-group">
+            <label for="negativeKeywords">Negative Keywords (Comma-separated, instant reject):</label>
+            <input type="text" id="negativeKeywords" placeholder="e.g. graduate, intern, senior">
+        </div>
+
+        <div class="form-group checkbox-group" style="flex-direction: row; align-items: center; gap: 8px;">
+            <input type="checkbox" id="emailToggle" checked>
+            <label for="emailToggle" style="margin:0;">Receive Email Notifications for Eligible Jobs</label>
+        </div>
+
+        <div class="actions">
+            <button id="saveBtn" class="primary-btn">Save Settings</button>
+            <button id="startBtn" class="success-btn">Start Evaluation</button>
+            <button id="stopBtn" class="danger-btn" style="display:none;">Stop Evaluation</button>
+        </div>
+
+        <div id="status" class="status-message"></div>
+
+        <div class="progress-info">
+            <span id="progressText">Ready</span>
+            <span id="matchesText">Matches: 0</span>
+            <span id="skippedText">Skipped: 0</span>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>
