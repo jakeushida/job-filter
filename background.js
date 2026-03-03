@@ -114,6 +114,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             }
         }
 
+        // Pre-Filtering: Closed Applications
+        const descLower = String(jobData.htmlContent || "").toLowerCase();
+        if (!preRejectReason && descLower.includes("no longer accepting applications")) {
+            preRejectReason = "No longer accepting applications";
+        }
+
         if (preRejectReason) {
             stats.processed++; // Count as processed but rejected instantly
 
