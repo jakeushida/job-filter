@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (result.negativeKeywords !== undefined) {
             negativeKeywordsInput.value = result.negativeKeywords;
         } else {
-            negativeKeywordsInput.value = "graduate"; // Default value
+            negativeKeywordsInput.value = "graduate, postdoctoral, masters, phd"; // Default value
         }
         if (result.profile) profileInput.value = result.profile;
         if (result.resume) resumeInput.value = result.resume;
