@@ -55,7 +55,7 @@ async function processJobs(startIndex) {
     if (!isRunning) return;
 
     // Find the job cards on the left navigation
-    const jobCards = document.querySelectorAll('.job-card-container, .scaffold-layout__list-item [data-job-id], .jobs-search-results__list-item');
+    let jobCards = document.querySelectorAll('.job-card-container, .scaffold-layout__list-item [data-job-id], .jobs-search-results__list-item');
 
     if (jobCards.length === 0) {
         chrome.runtime.sendMessage({
@@ -63,6 +63,23 @@ async function processJobs(startIndex) {
             error: 'Could not find any job cards on the page. Make sure you are on a LinkedIn jobs search page with the cards list active.'
         });
         return;
+    }
+
+    // If we hit the end of currently loaded jobs, try to scroll down the list container to force lazy-loading
+    if (startIndex >= jobCards.length) {
+        const listContainer = document.querySelector('.jobs-search-results-list, .scaffold-layout__list');
+        if (listContainer) {
+            chrome.runtime.sendMessage({ action: 'STATUS_MSG', text: 'Loading more jobs...' });
+
+            // Scroll to the bottom of the container
+            listContainer.scrollTop = listContainer.scrollHeight;
+
+            // Wait for LinkedIn to fetch new jobs
+            await delay(2500);
+
+            // Re-query the job cards
+            jobCards = document.querySelectorAll('.job-card-container, .scaffold-layout__list-item [data-job-id], .jobs-search-results__list-item');
+        }
     }
 
     const totalJobs = jobCards.length;
