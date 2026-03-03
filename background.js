@@ -180,6 +180,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Intercept messages from content.js and save them to storage for UI recovery
         const text = message.text || (message.action === 'EVALUATION_COMPLETE' ? 'Evaluation complete!' : '');
         chrome.storage.local.set({ lastStatus: { text: text, isError: message.isError || false } });
+
+        if (message.action === 'EVALUATION_COMPLETE') {
+            chrome.storage.local.set({ isRunning: false });
+        }
     }
 });
 
