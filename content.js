@@ -71,11 +71,16 @@ async function processJobs(startIndex) {
         if (listContainer) {
             chrome.runtime.sendMessage({ action: 'STATUS_MSG', text: 'Loading more jobs...' });
 
-            // Scroll to the bottom of the container
+            // Method 1: Scroll the last card into view (Triggers LinkedIn's IntersectionObserver)
+            if (jobCards.length > 0) {
+                jobCards[jobCards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+
+            // Method 2: Fallback container scroll
             listContainer.scrollTop = listContainer.scrollHeight;
 
-            // Wait for LinkedIn to fetch new jobs
-            await delay(2500);
+            // Wait longer for the network request and DOM update
+            await delay(3500);
 
             // Re-query the job cards
             jobCards = document.querySelectorAll('.job-card-container, .scaffold-layout__list-item [data-job-id], .jobs-search-results__list-item');
