@@ -36,10 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
     apiProviderSelect.addEventListener('change', updateProviderVisibility);
 
     // Load saved settings
-    chrome.storage.local.get(['apiProvider', 'apiKey', 'anthropicApiKey', 'webhookUrl', 'negativeKeywords', 'profile', 'resume', 'experience', 'sendEmails', 'isRunning', 'stats', 'lastStatus'], (result) => {
+    chrome.storage.local.get(['apiProvider', 'apiKey', 'anthropicApiKey', 'geminiModelId', 'webhookUrl', 'negativeKeywords', 'profile', 'resume', 'experience', 'sendEmails', 'isRunning', 'stats', 'lastStatus'], (result) => {
         if (result.apiProvider) apiProviderSelect.value = result.apiProvider;
         if (result.apiKey) apiKeyInput.value = result.apiKey;
         if (result.anthropicApiKey) anthropicApiKeyInput.value = result.anthropicApiKey;
+        if (result.geminiModelId) {
+            document.getElementById('geminiModelId').value = result.geminiModelId;
+        } else {
+            document.getElementById('geminiModelId').value = "gemini-2.5-flash-lite";
+        }
         if (result.webhookUrl) webhookUrlInput.value = result.webhookUrl;
         if (result.negativeKeywords !== undefined) {
             negativeKeywordsInput.value = result.negativeKeywords;
@@ -73,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             apiProvider: apiProviderSelect.value,
             apiKey: apiKeyInput.value.trim(),
             anthropicApiKey: anthropicApiKeyInput.value.trim(),
+            geminiModelId: document.getElementById('geminiModelId').value,
             webhookUrl: webhookUrlInput.value.trim(),
             negativeKeywords: negativeKeywordsInput.value.trim(),
             profile: profileInput.value.trim(),

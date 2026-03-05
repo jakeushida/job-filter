@@ -27,10 +27,11 @@ function delay(ms) {
 }
 
 // Load settings initially
-chrome.storage.local.get(['apiProvider', 'apiKey', 'anthropicApiKey', 'webhookUrl', 'negativeKeywords', 'profile', 'resume', 'experience', 'sendEmails', 'stats'], (result) => {
+chrome.storage.local.get(['apiProvider', 'apiKey', 'anthropicApiKey', 'geminiModelId', 'webhookUrl', 'negativeKeywords', 'profile', 'resume', 'experience', 'sendEmails', 'stats'], (result) => {
     if (result.apiProvider) settings.apiProvider = result.apiProvider;
     if (result.apiKey) settings.apiKey = result.apiKey;
     if (result.anthropicApiKey) settings.anthropicApiKey = result.anthropicApiKey;
+    if (result.geminiModelId) settings.geminiModelId = result.geminiModelId;
     if (result.webhookUrl) settings.webhookUrl = result.webhookUrl;
     if (result.negativeKeywords !== undefined) settings.negativeKeywords = result.negativeKeywords;
     if (result.profile) settings.profile = result.profile;
@@ -45,6 +46,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         if (changes.apiProvider) settings.apiProvider = changes.apiProvider.newValue;
         if (changes.apiKey) settings.apiKey = changes.apiKey.newValue;
         if (changes.anthropicApiKey) settings.anthropicApiKey = changes.anthropicApiKey.newValue;
+        if (changes.geminiModelId) settings.geminiModelId = changes.geminiModelId.newValue;
         if (changes.webhookUrl) settings.webhookUrl = changes.webhookUrl.newValue;
         if (changes.negativeKeywords) settings.negativeKeywords = changes.negativeKeywords.newValue;
         if (changes.profile) settings.profile = changes.profile.newValue;
@@ -353,8 +355,9 @@ async function evaluateJobWithGemini(jobData) {
     const maxRetries = 3;
 
     while (retries < maxRetries) {
+        const modelId = settings.geminiModelId || 'gemini-2.5-flash-lite';
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${settings.apiKey}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${settings.apiKey}`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
